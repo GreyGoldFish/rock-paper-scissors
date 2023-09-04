@@ -1,75 +1,70 @@
+let playerScore = 0;
+let computerScore = 0;
+
+window.onload = game;
+
+
+function game() {
+    const selections = document.querySelectorAll(".selection > img[data-selection]");
+
+    selections.forEach(
+        (selection) => {
+            selection.addEventListener(
+                "click",
+                (event) => {
+                    playRound(selection.getAttribute("data-selection"), getComputerChoice())
+                }
+            );
+        }
+    );
+}
+
+
 function getComputerChoice() {
-    let computerChoice = Math.floor(Math.random() * 3);
+    const computerChoice = Math.floor(Math.random() * 3);
+
     if (computerChoice === 0) {
-        return "Rock";
+        return "rock";
     }
     else if (computerChoice === 1) {
-        return "Paper";
+        return "paper";
     }
     else {
-        return "Scissors";
+        return "scissors";
     }
 }
 
 
 function playRound(playerChoice, computerChoice) {
-    let playerWon = true;
+    let message = document.querySelector(".message");
+    let scores = document.querySelector(".scores");
 
     if (playerChoice === computerChoice) {
-        // In a draw, playerWon === undefined
-        return;
+        message.textContent = "It's a draw!";
     }
-    else if (playerChoice === "Rock" && computerChoice === "Paper") {
-        playerWon = false;
-    }
-    else if (playerChoice === "Paper" && computerChoice === "Scissors") {
-        playerWon = false;
-    }
-    else if (playerChoice === "Scissors" && computerChoice === "Rock") {
-        playerWon = false;
-    }
-
-    return playerWon;
-}
-
-
-function game() {
-    let playerScore = 0;
-    let computerScore = 0;
-
-    for (let index = 0; index < 5; index++) {
-        let playerChoice = prompt("Rock, Paper or Scissors?");
-        // Capitalize playerChoice so that it can be compared to computerChoice
-        playerChoice = playerChoice.charAt(0).toUpperCase() + playerChoice.slice(1).toLowerCase();
-        const computerChoice = getComputerChoice();
-        const playerWon = playRound(playerChoice, computerChoice);
-
-        if (playerWon === undefined) {
-            console.log("It's a draw!");
-        }
-        else if (playerWon) {
-            console.log(`You won! Your ${playerChoice} beats the computer's ${computerChoice}.`);
-            playerScore++;
-        }
-        else {
-            console.log(`You lost! The computer's ${computerChoice} beats your ${playerChoice}.`);
-            computerScore++;
-        }
-
-        console.log(`Player: ${playerScore} | Computer: ${computerScore}`);
-    }
-
-    console.log("Game! And the winner is...");
-
-    if (playerScore === computerScore) {
-        console.log("No one, it's a draw!");
-    }
-    else if (playerScore > computerScore) {
-        console.log(`You, with ${playerScore} points!`);
+    else if (playerChoice === "rock" && computerChoice === "scissors"
+    || playerChoice === "paper" && computerChoice === "scissors"
+    || playerChoice === "scissors" && computerChoice === "paper") {
+        message.textContent = `You won! Your ${playerChoice} beats the computer's ${computerChoice}.`;
+        playerScore++;
     }
     else {
-        console.log(`The Computer, with ${playerScore} points!`);
+        message.textContent = `You lost! The computer's ${computerChoice} beats your ${playerChoice}.`;
+        computerScore++;
     }
-}
 
-game();
+    if (playerScore == 5) {
+        alert("You won!");
+        playerScore = 0;
+        computerScore = 0;
+        message.textContent = "";
+    }
+    else if (computerScore == 5) {
+        alert("The computer won!");
+        playerScore = 0;
+        computerScore = 0;
+        message.textContent = "";
+    }
+
+    scores.textContent = `You: ${playerScore} | Computer: ${computerScore}`;
+}
