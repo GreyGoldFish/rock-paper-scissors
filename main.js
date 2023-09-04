@@ -43,7 +43,7 @@ function playRound(playerChoice, computerChoice) {
         message.textContent = "It's a draw!";
     }
     else if (playerChoice === "rock" && computerChoice === "scissors"
-    || playerChoice === "paper" && computerChoice === "scissors"
+    || playerChoice === "paper" && computerChoice === "rock"
     || playerChoice === "scissors" && computerChoice === "paper") {
         message.textContent = `You won! Your ${playerChoice} beats the computer's ${computerChoice}.`;
         playerScore++;
